@@ -19,17 +19,14 @@ controller.getAll = async function(req, res) {
         }
     } catch(error) {
         res.status(404).json({
-            message: error.message
+            message: "tedts"
         })
     }
 }
 
 controller.post = async function(req, res) {
     try {
-        let jurusan = await model.jurusan.create({
-            kd_jurusan : req.body.kd_jurusan,
-            nama_jurusan : req.body.nama_jurusan
-        })
+        let jurusan = await model.jurusan.bulkCreate(req.body)
 
         res.status(200).json({
             message: 'berhasil tambah data jurusan',

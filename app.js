@@ -26,6 +26,7 @@ app.use(helmet());
 
 //memanggil routes
 const mahasiswaRouter = require('./routes/mahasiswa');
+const jurusanRouter = require('./routes/jurusan');
 const axiosRouter = require('./routes/axios');
 
 app.use(morgan('dev'));
@@ -33,6 +34,8 @@ app.use(bodyParser.urlencoded({extended:false}))
 app.use(bodyParser.json())
 
 app.use('/mahasiswa', mahasiswaRouter);
+app.use('/jurusan', jurusanRouter);
+
 app.use('/axios', axiosRouter);
 app.use('/assets', express.static('assets'));
 

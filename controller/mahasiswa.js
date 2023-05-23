@@ -4,41 +4,70 @@ const { Op } = require('sequelize');
 
 controller.getAll = async function(req, res) {
     try {
-        let mahasiswa = await model.mahasiswa.findAll({
+        let limit = parseInt(req.query.record)
+        let page = parseInt(req.query.page)
+        let start = 0 + ( page - 1 ) * limit;
+        let end = page * limit;
+
+        let mahasiswa = await model.mahasiswa.findAndCountAll({
             attributes: [
                 ['nim', 'nimMahasiswa'],
                 ['nama', 'namaMahasiswa'],
                 ['kd_jurusan', 'kodeJurusan'],
                 ['alamat', 'alamat'],
                 ['angkatan', 'tahunAngkatan'],
+                ['foto', 'gambar'],
             ],
-            include: [
-                { model: model.jurusan }
-            ],
-            where:{
-                [Op.and]: [
-                    { nama: 'Udin Petot'},
-                    { kd_jurusan: 'TKJ'}
-                ]
-            },
-            order: [['angkatan', 'asc']],
+            // include: [
+            //     { model: model.jurusan }
+            // ],
+            // where:{
+            //     [Op.and]: [
+            //         { nama: 'Udin Petot'},
+            //         { kd_jurusan: 'TKJ'}
+            //     ]
+            // },
+            order: [['nim', 'asc']],
+            limit: limit,
+            offset: start
             // limit: 2
         })
 
-        if(mahasiswa.length > 0) {
-            res.status(200).json({
-                message: 'get method mahasiswa',
-                data: mahasiswa
-            });
-        }else{
-            res.status(200).json({
-                message: 'tidak ada data',
-                data: []
-            });
+        let countFiltered = mahasiswa.count;
+        let pagination = {};
+        pagination.totalRow = mahasiswa.count;
+        pagination.totalPage = Math.ceil(countFiltered / limit)
+
+        if(end < countFiltered){
+            pagination.next = {
+                page: page + 1,
+                limit
+            }
         }
+
+        if(start > 0) {
+            pagination.prev = {
+                page: page -1,
+                limit
+            }
+        }
+
+        res.status(200).json({
+            message: 'data semua mahasiswa',
+            pagination,
+            data: mahasiswa.rows
+        });
+        // if(mahasiswa.length > 0) {
+            
+        // }else{
+        //     res.status(200).json({
+        //         message: 'tidak ada data',
+        //         data: []
+        //     });
+        // }
     }catch(error){
         res.status(404).json({
-            message:error
+            message:error.message
         })
     }
 }
