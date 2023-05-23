@@ -1,0 +1,201 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "API MAHASISWA",
+        "description": "Daftar Mahasiswa",
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:4000",
+            "description": "localhost"
+        }
+    ],
+    "tags": [
+        {
+            "name": "Mahasiwa",
+            "description": "Mahasiswa desc"
+        },
+        {
+            "name": "Jurusan",
+            "description": "Jurusan desc"
+        }
+    ],
+    "paths": {
+        "/mahasiwa": {
+            "get":{
+                "tags":[
+                    "Mahasiswa"
+                ],
+                "summary": "Get All mahasiswa",
+                "description": "",
+                "responses": {
+                    "200": {
+                        "description": "success"
+                    }
+                }
+            },
+            "post":{
+                "tags":[
+                    "Mahasiswa"
+                ],
+                "summary": "Post mahasiswa",
+                "consumes": "multipart/form-data",
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "nim": {
+                                        "type": "string"
+                                    },
+                                    "nama": {
+                                        "type": "string"
+                                    },
+                                    "kd_jurusan": {
+                                        "type": "string"
+                                    },
+                                    "alamat": {
+                                        "type": "string"
+                                    },
+                                    "angkatan": {
+                                        "type": "string"
+                                    },
+                                    "foto": {
+                                        "type": "string",
+                                        "format": "binary"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "sukses"
+                    }
+                }
+            }
+        },
+        "/mahasiswa/{nim}":{
+            "get":{
+                "tags":[
+                    "Mahasiswa"
+                ],
+                "summary": "Get All mahasiswa",
+                "description": "",
+                "parameters":[
+                    {
+                        "in": "path",
+                        "name": "nim",
+                        "schema": {
+                            "type" : "integer"
+                        },
+                        "description": "NIM Mahasiswa"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "sukses"
+                    }
+                }
+            },
+            "put":{
+                "tags":[
+                    "Mahasiswa"
+                ],
+                "summary": "Update mahasiswa",
+                "parameters":[
+                    {
+                        "in": "path",
+                        "name": "nim",
+                        "schema": {
+                            "type" : "integer"
+                        },
+                        "description": "NIM Mahasiswa"
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "nama": {
+                                        "type": "string"
+                                    },
+                                    "kd_jurusan": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete":{
+                "tags":[
+                    "Mahasiswa"
+                ],
+                "summary": "Delete mahasiswa",
+                "parameters":[
+                    {
+                        "in": "path",
+                        "name": "nim",
+                        "schema": {
+                            "type" : "integer"
+                        },
+                        "description": "NIM Mahasiswa"
+                    }
+                ],
+                "responses": {
+                    "200" :{
+                        "description":"success"
+                    }
+                }
+            }
+        },
+        "/mahasiswa/search?keyword=":{
+            "get":{
+                "tags":[
+                    "Mahasiswa"
+                ],
+                "summary": "Search mahasiswa",
+                "description": "",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters":[
+                    {
+                        "in": "query",
+                        "name": "keyword",
+                        "schema": {
+                            "type" : "string"
+                        },
+                        "description": "NIM / Nama mahasiswa"
+                    }
+                ],
+                "responses": {
+                    "200" :{
+                        "description":"success"
+                    }
+                }
+            }
+        },
+        "/jurusan":{
+            "get":{
+                "tags":[
+                    "jurusan"
+                ],
+                "summary": "Get All jurusan",
+                "description": "",
+                "responses": {
+                    "200": {
+                        "description": "sukses"
+                    }
+                }
+            }
+        }
+    }
+}
